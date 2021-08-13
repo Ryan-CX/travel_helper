@@ -11,6 +11,8 @@ const App = () => {
 	const [bounds, setBounds] = useState({});
 	const [childClicked, setChildClicked] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
+	const [type, setType] = useState('restaurant');
+	const [rating, setRating] = useState('');
 
 	//detect user's location using the built-in geolocation API
 	useEffect(() => {
@@ -24,12 +26,12 @@ const App = () => {
 
 	useEffect(() => {
 		setIsLoading(true);
-		console.log(coordinates, bounds);
-		getPlacesData(bounds.sw, bounds.ne).then((data) => {
+
+		getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
 			setPlaces(data);
 			setIsLoading(false);
 		});
-	}, [coordinates, bounds]);
+	}, [type, coordinates, bounds]);
 
 	return (
 		<div>
@@ -37,10 +39,15 @@ const App = () => {
 			<Header />
 			<Grid container spacing={3} style={{ width: '100%' }}>
 				<Grid item xs={12} md={4}>
+					{/* not the best practice to have so much props like this but in this case it's fine since it's only 1 level down App -> List */}
 					<List
 						places={places}
 						childClicked={childClicked}
 						isLoading={isLoading}
+						type={type}
+						setType={setType}
+						rating={rating}
+						setRating={setRating}
 					/>
 				</Grid>
 				<Grid item xs={12} md={8}>

@@ -11,10 +11,17 @@ import {
 import PlaceDetails from '../PlaceDetails/PlaceDetails';
 import listStyles from './styles';
 
-const List = ({ places, childClicked, isLoading }) => {
+const List = ({
+	places,
+	childClicked,
+	isLoading,
+	type,
+	setType,
+	rating,
+	setRating,
+}) => {
 	const classes = listStyles();
-	const [type, setType] = useState('restaurant');
-	const [rating, setRating] = useState('');
+
 	const [eleRefs, setEleRefs] = useState([]); // for click the icon then bring to the details
 	//use Array constructor to create as many elements as the number of places
 	useEffect(() => {
@@ -39,9 +46,9 @@ const List = ({ places, childClicked, isLoading }) => {
 					<FormControl className={classes.formControl}>
 						<InputLabel>Type</InputLabel>
 						<Select value={type} onChange={(e) => setType(e.target.value)}>
-							<MenuItem value='restaurant'>Restaurant</MenuItem>
-							<MenuItem value='hotel'>Hotel</MenuItem>
-							<MenuItem value='attraction'>Attraction</MenuItem>
+							<MenuItem value='restaurants'>Restaurant</MenuItem>
+							<MenuItem value='hotels'>Hotel</MenuItem>
+							<MenuItem value='attractions'>Attraction</MenuItem>
 						</Select>
 					</FormControl>
 
@@ -57,6 +64,7 @@ const List = ({ places, childClicked, isLoading }) => {
 					{/*  Display the places variable  */}
 					<Grid container spacing={3} className={classes.list}>
 						{places?.map((place, index) => (
+							//need the ref inside the Grid to be able to get the ref of the click on the icon
 							<Grid ref={eleRefs[index]} item xs={12} key={index}>
 								<PlaceDetails
 									place={place}

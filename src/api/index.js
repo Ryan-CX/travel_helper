@@ -1,12 +1,12 @@
 import axios from 'axios';
 
 //below is the code snippet from RapidAPI, get restaurant within coordinates boundaries with some modifications
-export const getPlacesData = async (sw, ne) => {
+export const getPlacesData = async (type, sw, ne) => {
 	try {
 		const {
 			data: { data },
 		} = await axios.get(
-			`https://travel-advisor.p.rapidapi.com/restaurants/list-in-boundary`,
+			`https://travel-advisor.p.rapidapi.com/${type}/list-in-boundary`,
 			{
 				params: {
 					bl_latitude: sw.lat,
