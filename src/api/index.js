@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-//below is the code snippet from RapidAPI, get restaurant within coordinates boundaries with some modificatons
+//below is the code snippet from RapidAPI, get restaurant within coordinates boundaries with some modifications
 export const getPlacesData = async (sw, ne) => {
 	try {
 		const {
@@ -15,7 +15,8 @@ export const getPlacesData = async (sw, ne) => {
 					tr_latitude: ne.lat,
 				},
 				headers: {
-					'x-rapidapi-key': process.env.REACT_APP_RAPID_API_KEY,
+					'x-rapidapi-key':
+						'f3a4b48122mshc2ebd183c9a0d33p186e68jsn7fc10498a7ce',
 					'x-rapidapi-host': 'travel-advisor.p.rapidapi.com',
 				},
 			}

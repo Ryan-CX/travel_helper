@@ -7,8 +7,10 @@ import Map from './components/Map/Map';
 
 const App = () => {
 	const [places, setPlaces] = useState([]);
-	const [coordinates, setCoordinates] = useState({ lat: 0, lng: 0 });
-	const [bounds, setBounds] = useState(null);
+	const [coordinates, setCoordinates] = useState({});
+	const [bounds, setBounds] = useState({});
+	const [childClicked, setChildClicked] = useState(null);
+	const [isLoading, setIsLoading] = useState(false);
 
 	//detect user's location using the built-in geolocation API
 	useEffect(() => {
@@ -18,14 +20,14 @@ const App = () => {
 			}
 		);
 	}, []);
-
 	//after fetching data from the getPlacesData function with moving the map, set the data to the places state using useEffect, getPlacesData has 2 props, sw and se, which are the bounds of the map. In this case, the bounds are changing based on the user's selection(drag)
 
 	useEffect(() => {
+		setIsLoading(true);
 		console.log(coordinates, bounds);
 		getPlacesData(bounds.sw, bounds.ne).then((data) => {
-			console.log(data);
-			setPlaces(data.filter((place) => place.name && place.num_reviews > 0));
+			setPlaces(data);
+			setIsLoading(false);
 		});
 	}, [coordinates, bounds]);
 
@@ -35,13 +37,19 @@ const App = () => {
 			<Header />
 			<Grid container spacing={3} style={{ width: '100%' }}>
 				<Grid item xs={12} md={4}>
-					<List places={places} />
+					<List
+						places={places}
+						childClicked={childClicked}
+						isLoading={isLoading}
+					/>
 				</Grid>
 				<Grid item xs={12} md={8}>
 					<Map
 						setCoordinates={setCoordinates}
 						setBounds={setBounds}
 						coordinates={coordinates}
+						places={places}
+						setChildClicked={setChildClicked}
 					/>
 				</Grid>
 			</Grid>
