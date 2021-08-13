@@ -57,7 +57,7 @@ const List = ({ places, childClicked, isLoading }) => {
 					{/*  Display the places variable  */}
 					<Grid container spacing={3} className={classes.list}>
 						{places?.map((place, index) => (
-							<Grid item xs={12} key={index}>
+							<Grid ref={eleRefs[index]} item xs={12} key={index}>
 								<PlaceDetails
 									place={place}
 									//make sure to pass the ref whenever the place details is clicked
