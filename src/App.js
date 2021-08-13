@@ -7,12 +7,24 @@ import Map from './components/Map/Map';
 
 const App = () => {
 	const [places, setPlaces] = useState([]);
+	const [filteredPlaces, setFilteredPlaces] = useState([]);
 	const [coordinates, setCoordinates] = useState({});
 	const [bounds, setBounds] = useState({});
 	const [childClicked, setChildClicked] = useState(null);
 	const [isLoading, setIsLoading] = useState(false);
 	const [type, setType] = useState('restaurant');
 	const [rating, setRating] = useState('');
+
+	// setting up the search bar
+	const [autoComplete, setAutoComplete] = useState(null);
+	const onLoad = (autoC) => {
+		setAutoComplete(autoC);
+	};
+	const onPlaceChanged = () => {
+		const lat = autoComplete.getPlace().geometry.location.lat();
+		const lng = autoComplete.getPlace().geometry.location.lng();
+		setCoordinates({ lat, lng });
+	};
 
 	//detect user's location using the built-in geolocation API
 	useEffect(() => {
@@ -29,19 +41,26 @@ const App = () => {
 
 		getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
 			setPlaces(data);
+			setFilteredPlaces([]);
 			setIsLoading(false);
 		});
 	}, [type, coordinates, bounds]);
 
+	// update the list based on rating, if the rating is larger than current selected rating, update the list
+	useEffect(() => {
+		const filteredPlaces = places.filter((place) => place.rating >= rating);
+		setFilteredPlaces(filteredPlaces);
+	}, [rating]);
+
 	return (
 		<div>
 			<CssBaseline />
-			<Header />
+			<Header onPlaceChanged={onPlaceChanged} onLoad={onLoad} />
 			<Grid container spacing={3} style={{ width: '100%' }}>
 				<Grid item xs={12} md={4}>
 					{/* not the best practice to have so much props like this but in this case it's fine since it's only 1 level down App -> List */}
 					<List
-						places={places}
+						places={filteredPlaces.length ? filteredPlaces : places}
 						childClicked={childClicked}
 						isLoading={isLoading}
 						type={type}
@@ -55,7 +74,7 @@ const App = () => {
 						setCoordinates={setCoordinates}
 						setBounds={setBounds}
 						coordinates={coordinates}
-						places={places}
+						places={filteredPlaces.length ? filteredPlaces : places}
 						setChildClicked={setChildClicked}
 					/>
 				</Grid>
