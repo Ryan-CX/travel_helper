@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CssBaseline, Grid } from '@material-ui/core';
-import { getPlacesData, getWeatherData } from './api/index';
+import { getPlacesData } from './api/index';
 
 import Header from './components/Header/Header';
 import List from './components/List/List';
@@ -15,7 +15,6 @@ const App = () => {
 	const [isLoading, setIsLoading] = useState(false);
 	const [type, setType] = useState('restaurant');
 	const [rating, setRating] = useState('');
-	const [weatherData, setWeatherData] = useState([]);
 
 	// setting up the search bar
 	const [autoComplete, setAutoComplete] = useState(null);
@@ -43,9 +42,6 @@ const App = () => {
 	useEffect(() => {
 		if (bounds.sw && bounds.ne) {
 			setIsLoading(true);
-			getWeatherData(coordinates.lat, coordinates.lng).then((data) =>
-				setWeatherData(data)
-			);
 
 			getPlacesData(type, bounds.sw, bounds.ne).then((data) => {
 				setPlaces(data?.filter((place) => place.name && place.num_reviews > 0));
@@ -85,7 +81,6 @@ const App = () => {
 						coordinates={coordinates}
 						places={filteredPlaces.length ? filteredPlaces : places}
 						setChildClicked={setChildClicked}
-						weatherData={weatherData}
 					/>
 				</Grid>
 			</Grid>

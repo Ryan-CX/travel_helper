@@ -73,17 +73,6 @@ const Map = ({
 						)}
 					</div>
 				))}
-
-				{/* integrate weather into map */}
-
-				{weatherData?.list?.map((data, i) => (
-					<div key={i} lat={data.coord.lat} lng={data.coord.lng}>
-						<img
-							height={100}
-							src={`https://openweathermap.org/img/w/${data.weather[0].icon}.png`}
-						/>
-					</div>
-				))}
 			</GoogleMapReact>
 		</div>
 	);
