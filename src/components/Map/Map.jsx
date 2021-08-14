@@ -13,6 +13,7 @@ const Map = ({
 	coordinates,
 	places,
 	setChildClicked,
+	weatherData,
 }) => {
 	const classes = mapStyles();
 	const isDesktop = useMediaQuery('(min-width: 600px)');
@@ -25,7 +26,11 @@ const Map = ({
 				center={coordinates}
 				defaultZoom={14}
 				margin={[50, 50, 50, 50]}
-				options={''}
+				options={{
+					disableDefaultUI: true,
+					zoomControl: true,
+					styles: mapStyles,
+				}}
 				onChange={(e) => {
 					setCoordinates({ lat: e.center.lat, lng: e.center.lng });
 					setBounds({ ne: e.marginBounds.ne, sw: e.marginBounds.sw });
@@ -66,6 +71,17 @@ const Map = ({
 								<Rating size='small' value={Number(place.rating)} readOnly />
 							</Paper>
 						)}
+					</div>
+				))}
+
+				{/* integrate weather into map */}
+
+				{weatherData?.list?.map((data, i) => (
+					<div key={i} lat={data.coord.lat} lng={data.coord.lng}>
+						<img
+							height={100}
+							src={`https://openweathermap.org/img/w/${data.weather[0].icon}.png`}
+						/>
 					</div>
 				))}
 			</GoogleMapReact>
