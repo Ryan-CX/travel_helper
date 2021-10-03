@@ -22,7 +22,7 @@ const App = () => {
 	const onLoad = (autoC) => {
 		setAutoComplete(autoC);
 	};
-	// the purpose of onPlaceChanged is to connect props from <AutoComplete> tag in Header.js, so we can get the coords of the place we typed into the search bar.
+	// the purpose of onPlaceChanged is to connect props from <AutoComplete> tag in Header.js, so we can get the coords of the place we typed into the search bar. getPlace() is a function from google api.
 	const onPlaceChanged = () => {
 		const lat = autoComplete.getPlace().geometry.location.lat();
 		const lng = autoComplete.getPlace().geometry.location.lng();
